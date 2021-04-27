@@ -1,21 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import * as Location from 'expo-location'
+import Loading from './src/components/Loading'
+import { Alert } from 'react-native'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+export default class App extends React.Component {
+  getLocation = async () => {
+    try {
+      const res = await Location.getForegroundPermissionsAsync()
+      console.log('res  :', res)
+      const location = await Location.getCurrentPositionAsync()
+      console.log('location :', location)
+    } catch (error) {
+      Alert.alert("Can't find you.")
+    }
+  }
+  componentDidMount() {
+    this.getLocation()
+  }
+  render() {
+    return <Loading />
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+// Functional
+// export default function App() {
+//   return <Loading />
+// }
